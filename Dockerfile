@@ -1,13 +1,15 @@
-# Inspired by Codeship: codeship/aws-base
-FROM python:3.6-alpine3.7
+FROM python:3.8-alpine3.10
 
 LABEL maintainer='Geoffrey Roguelon'
 
-# which version of the AWS CLI to install.
-# https://pypi.python.org/pypi/awscli
-ARG AWS_CLI_VERSION="1.14.23"
+ARG AWS_CLI_VERSION="1.16.293"
 
-ENV PIP_DISABLE_PIP_VERSION_CHECK=true
+ENV PIP_DISABLE_PIP_VERSION_CHECK true
 
-RUN pip install awscli==${AWS_CLI_VERSION} && \
+RUN apk add --no-cache groff jq && \
+  pip install awscli==${AWS_CLI_VERSION} && \
   mkdir -p "${HOME}/.aws"
+
+ENTRYPOINT ["aws"]
+
+CMD ["help"]
